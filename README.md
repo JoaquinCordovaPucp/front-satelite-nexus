@@ -9,7 +9,13 @@ npm create astro@latest -- --template basics
 ## 🚀 Project Structure
 
 Inside of your Astro project, you'll see the following folders and files:
+```
+npm install 
+```
 
+```
+npm run dev
+```
 ```text
 /
 ├── public/
