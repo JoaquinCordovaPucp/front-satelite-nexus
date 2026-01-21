@@ -13,7 +13,7 @@ const io = new Server(4500, {
 
 //Creamos el objeto Serial Port desde un Inicio
 const port =  new SerialPort({
-    path: "/dev/tty.usbmodem1201",
+    path: "/dev/tty.usbmodem1301",
     baudRate: 9600
 })
 

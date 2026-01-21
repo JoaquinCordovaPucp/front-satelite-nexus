@@ -18,7 +18,7 @@ import CommandPannel from '../components/CommandPannel.jsx';
 import MissionStage from './MissionStage.jsx'; 
 import Titular from './Titular.jsx';
 
-const streamUrl = "http://localhost:3001/stream.mjpg";
+const streamUrl = "http://192.168.1.38";
 
 ChartJS.register(
   CategoryScale,

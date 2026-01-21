@@ -10,10 +10,11 @@ export default function Stream({ streamUrl }) {
             <div>
                 <h2 className="text-center font-bold mb-2">Link Status: {loading ? "Loading..." : "Live"}</h2>
             </div>
-            { !loading && <img
+            <img
             src={streamUrl}
             onLoad={() => setLoading(false)}
-            />}
+            className='w-full h-64 border border-amber-500 rounded-lg'
+            />
 
             {loading && <SkeletonStream />}
         </div>
