@@ -8,7 +8,8 @@ const io = new Server(4500, {
 
 
 
-
+// EXCUTE THIS COMMAND TO GET THE PATH OF YOUR SERIAL DEVICE
+// ls /dev/tty.*
 
 //Creamos el objeto Serial Port desde un Inicio
 const port =  new SerialPort({
