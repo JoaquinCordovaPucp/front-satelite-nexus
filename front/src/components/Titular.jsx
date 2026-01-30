@@ -1,7 +1,7 @@
 
 export default function Titular() {
     return(
-        <div class="flex flex-col w-full items-center p-4 bg-amber-200">
+        <div class="flex flex-col w-full items-center px-4 py-2 bg-amber-200">
             <img />
             <h1 class="text-2xl font-bold">Nexus Space 📡</h1>
             <div class="flex flex-row gap-5 text-xl ">

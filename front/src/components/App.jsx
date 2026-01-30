@@ -36,7 +36,7 @@ const socket = io("http://localhost:4500");
 
 export default function App() {
     // const [rawTelemetry, setRawTelemetry] = useState(initialArray);
-    const [dataArrays, setDataArrays] = useState([])
+    const [dataArrays, setDataArrays] = useState([]) // The format is the following: [[data1,data2,...],[data1,data2,...],...]
     useEffect(() => {
         socket.on("rawTelemetry", (data) => {
             setDataArrays(prev => [...prev.slice(-50), data])
@@ -57,26 +57,29 @@ export default function App() {
         return dataPoints
     }
 
-    const [dataPointVoltage, dataPointTemp] = [getNDataPoints(1), getNDataPoints(2)];
+    const dataPoints = {
+        dataPointVoltage: getNDataPoints(1),
+        dataPointTemp: getNDataPoints(2)
+    }
 
  
 
     return (
-        <div class="w-full h-full bg-amber-50 flex flex-row">
-            <div class="w-1/4 h-full bg-amber-600 flex flex-col p-2">
+        <div class="w-full h-full bg-[#1C2A36] flex flex-row">
+            <div class="w-1/4 h-full  flex flex-col p-2">
                 <Titular />
-                <MissionStage />
-                <TelemetryChart name="Voltage" dataPoints={dataPointVoltage} />
-                <TelemetryChart name="Temperature" dataPoints={dataPointTemp} />
+                <MissionStage data={dataPoints} />
+                <TelemetryChart name="Voltage" dataPoints={dataPoints.dataPointVoltage} />
+                <TelemetryChart name="Temperature" dataPoints={dataPoints.dataPointTemp} />
             </div>
-            <div class="w-1/2 h-full bg-green-50 p-2">
+            <div class="w-1/2 h-full  p-2">
                 <Stream streamUrl={streamUrl} />
                 <div class="flex flex-row w-full">
-                    <TelemetryChart name="Voltage" dataPoints={dataPointVoltage} />
-                    <TelemetryChart name="Temperature" dataPoints={dataPointTemp} />	
+                    <TelemetryChart name="Voltage" dataPoints={dataPoints.dataPointVoltage} />
+                    <TelemetryChart name="Temperature" dataPoints={dataPoints.dataPointTemp} />	
                 </div>	
             </div>
-            <div class="w-1/4 h-full bg-red-500 p-2">
+            <div class="w-1/4 h-full p-2">
                 <RawTelemetry />
                 <CommandPannel />
             </div>
