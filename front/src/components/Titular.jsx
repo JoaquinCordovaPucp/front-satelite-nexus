@@ -1,21 +1,12 @@
 
-export default function Titular() {
+export default function Titular({MET}) {
     return(
-        <div class="flex flex-col w-full items-center px-4 py-2 bg-amber-200">
+        <div className="flex flex-col w-full items-center px-4 py-2 bg-slate-700">
             <img />
-            <h1 class="text-2xl font-bold">Nexus Space 📡</h1>
-            <div class="flex flex-row gap-5 text-xl ">
-                <p>Fecha:</p>
-                <p>1233</p>
-            </div>
-            <div class="flex flex-row gap-5 text-xl">
-                <p>CLT:</p>
-                <p>1233</p>
-            </div>
-            <div class="flex flex-row gap-5 text-xl">
-                <p>MET:</p>
-                <p>000000</p>
-            </div>
+            <h1 className="text-2xl font-bold">Nexus Space 📡</h1>
+            <p className="text-xl">Fecha: {new Date().toLocaleDateString()}</p>
+            <p className="text-xl">Hora: {new Date().toLocaleTimeString()}</p>
+            <p className="text-xl">MET: {MET}</p>
         </div>
     )
 }

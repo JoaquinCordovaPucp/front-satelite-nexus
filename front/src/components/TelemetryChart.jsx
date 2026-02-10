@@ -63,7 +63,7 @@ export default function TelemetryChart({Name}) {
   };
 
   return (
-    <div className="w-full border border-amber-300 p-2">
+    <div className="w-full p-2">
       <h2>{Name}</h2>
       <Line data={data} options={options} />
     </div>

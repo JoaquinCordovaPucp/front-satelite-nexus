@@ -15,10 +15,15 @@
     "@types/react-dom": "^19.2.3",
     "astro": "^5.16.6",
     "chart.js": "^4.5.1",
+    "csv": "^6.4.1",
     "react": "^19.2.3",
     "react-chartjs-2": "^5.3.1",
     "react-dom": "^19.2.3",
     "socket.io-client": "^4.8.1",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "three": "^0.182.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.182.0"
   }
 }

@@ -56,7 +56,7 @@ export default function TelemetryChart({name, dataPoints}) {
 
   }
   return (
-    <div className='w-full flex flex-col border border-amber-300 p-2'>
+    <div className='w-full flex flex-col border border-slate-600 p-2'>
       <h1>{name}</h1>
       <Line data={data} options={options}/>
     </div>
