@@ -1,7 +1,4 @@
 
-
-
-
 export default function RawTelemetry({ data = {} }) {
     const entries = Object.entries(data)
 
@@ -14,26 +11,29 @@ export default function RawTelemetry({ data = {} }) {
         value
     }))
     return (
-        <div className="w-full border border-slate-600 p-2">
-            <h2 className="text-center font-bold mb-2">Raw Telemetry</h2>
-                <div class="flex flex-row">
-                    <div class="flex-1">
-                        {dataCol1.map((item, index) => (
-                            <div class="flex flex-row justify-between p-2 border-slate-500" key={`col1-${index}`}>
-                                <p class="">{item.title}</p>
-                                <p class="font-bold ">{item.value}</p>
-                            </div>
-                        ))}
-                    </div>
-                    <div class="flex-1">
-                        {dataCol2.map((item, index) => (
-                            <div class="flex flex-row justify-between p-2 border-slate-500" key={`col2-${index}`}>
-                                <p class="">{item.title}</p>
-                                <p class="font-bold ">{item.value}</p>
-                            </div>
-                        ))}
-                    </div>
+        <section className="rounded-3xl border border-white/10 bg-slate-950/45 p-4 text-slate-100 shadow-[0_20px_60px_rgba(2,6,23,0.28)] backdrop-blur">
+            <div className="mb-3 flex items-center justify-between">
+                <h2 className="text-sm font-semibold uppercase tracking-[0.28em] text-slate-400">Raw telemetry</h2>
+                <span className="text-xs text-slate-500">Último paquete</span>
+            </div>
+            <div className="flex flex-row gap-3 text-sm">
+                <div className="flex-1 space-y-2">
+                    {dataCol1.map((item, index) => (
+                        <div className="flex flex-row justify-between rounded-2xl border border-white/5 bg-white/5 px-3 py-2" key={`col1-${index}`}>
+                            <p className="text-slate-400">{item.title}</p>
+                            <p className="font-medium text-slate-50">{item.value}</p>
+                        </div>
+                    ))}
+                </div>
+                <div className="flex-1 space-y-2">
+                    {dataCol2.map((item, index) => (
+                        <div className="flex flex-row justify-between rounded-2xl border border-white/5 bg-white/5 px-3 py-2" key={`col2-${index}`}>
+                            <p className="text-slate-400">{item.title}</p>
+                            <p className="font-medium text-slate-50">{item.value}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
+        </section>
     );
 }

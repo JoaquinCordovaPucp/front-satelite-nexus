@@ -65,29 +65,29 @@ export default function MissionStage({ data }) {
         value: value
     }))
     return (
-        <div class="border border-slate-600 flex flex-col">
-            <div class="flex flex-row gap-5 text-xl p-4 items-center bg-slate-500 border">
-                <h2 class="text-xl font-bold  p-2">Etapa de la Misión: </h2>
-                <p class="">Inicio</p>
+        <section className="rounded-3xl border border-white/10 bg-slate-950/45 p-4 text-slate-100 shadow-[0_20px_60px_rgba(2,6,23,0.28)] backdrop-blur">
+            <div className="mb-3 flex items-center justify-between">
+                <h2 className="text-sm font-semibold uppercase tracking-[0.28em] text-slate-400">Etapa de la misión</h2>
+                <p className="text-xs text-slate-500">Inicio</p>
             </div>
-            <div class="flex flex-row text-sm text-white">
-                <div class="flex-1">
-                    {dataCol1.map((item) => (
-                        <div class="flex flex-row justify-between p-2 border-t border-slate-500">
-                            <p class="text-gray-200">{item.title} </p>
-                            <p class="font-bold ">{item.value}<span class="text-xs ">{item.unit}</span></p>
+            <div className="flex flex-row gap-3 text-sm">
+                <div className="flex-1 space-y-2">
+                    {dataCol1.map((item, index) => (
+                        <div className="flex flex-row justify-between rounded-2xl border border-white/5 bg-white/5 px-3 py-2" key={`stage-1-${index}`}>
+                            <p className="text-slate-400">{item.title}</p>
+                            <p className="font-medium text-slate-50">{item.value}<span className="ml-1 text-xs text-slate-400">{item.unit}</span></p>
                         </div>
                     ))}
                 </div>
-                <div class="flex-1">
-                    {dataCol2.map((item) => (
-                        <div class="flex flex-row justify-between p-2 border-t border-slate-500">
-                            <p class="text-gray-200">{item.title} </p>
-                            <p class="font-bold ">{item.value}<span class="text-xs ">{item.unit}</span></p>
+                <div className="flex-1 space-y-2">
+                    {dataCol2.map((item, index) => (
+                        <div className="flex flex-row justify-between rounded-2xl border border-white/5 bg-white/5 px-3 py-2" key={`stage-2-${index}`}>
+                            <p className="text-slate-400">{item.title}</p>
+                            <p className="font-medium text-slate-50">{item.value}<span className="ml-1 text-xs text-slate-400">{item.unit}</span></p>
                         </div>
                     ))}
                 </div>
             </div>
-        </div>
+        </section>
     )
 }

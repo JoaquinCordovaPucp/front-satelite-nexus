@@ -19,6 +19,87 @@ let isConfigReady = false
 let currentPort = null
 let currentParser = null
 let currentPortPath = null
+
+const telemetryFieldNames = [
+    "TYPE",
+    "SEQ",
+    "TIME",
+    "FLAGS",
+    "VOLT",
+    "PITCH",
+    "ROLL",
+    "LON",
+    "LAT",
+    "VVEL",
+    "PRES",
+    "TEMP",
+    "ECO2",
+    "ETOH",
+    "AQI",
+    "UV",
+    "GYRX",
+    "GYRY",
+    "GYRZ",
+    "ACCX",
+    "ACCY",
+    "ACCZ",
+    "ALT",
+    "CHK",
+]
+
+const legacyTelemetryMap = {
+    "Voltaje": "VOLT",
+    "Inclinacion en X": "PITCH",
+    "Inclinacion en Y": "ROLL",
+    "Longitud": "LON",
+    "Latitud": "LAT",
+    "Tiempo Encendido": "TIME",
+    "Velocidad Vertical": "VVEL",
+    "Presion Atmosferica": "PRES",
+    "Temperatura": "TEMP",
+    "eCO2": "ECO2",
+    "Indice Ultravioleta": "UV",
+    "Aceleracion Angular en X": "GYRX",
+    "Aceleracion Angular en Y": "GYRY",
+    "Aceleracion Angular en Z": "GYRZ",
+    "Altitud": "ALT",
+}
+
+const parseTelemetryValue = (value) => {
+    if (value === undefined || value === null || value === "") {
+        return ""
+    }
+
+    const parsedValue = Number(value)
+    return Number.isNaN(parsedValue) ? value : parsedValue
+}
+
+const parseTelemetryLine = (line) => {
+    const values = line.trim().split(",")
+
+    return telemetryFieldNames.reduce((accumulator, fieldName, index) => {
+        accumulator[fieldName] = parseTelemetryValue(values[index])
+        return accumulator
+    }, {})
+}
+
+const isTelemetryLine = (line) => {
+    const values = line.trim().split(",")
+
+    if (values.length !== telemetryFieldNames.length) {
+        return false
+    }
+
+    return values.slice(0, 4).every((value) => value !== "" && !Number.isNaN(Number(value)))
+}
+
+const buildLegacyTelemetry = (packet) => {
+    return Object.entries(legacyTelemetryMap).reduce((accumulator, [legacyKey, packetKey]) => {
+        accumulator[legacyKey] = packet[packetKey] ?? ""
+        return accumulator
+    }, {})
+}
+
 app.get("/config-status", (req, res) => {
   res.json({ isConfigReady });
 });
@@ -85,7 +166,7 @@ io.on("connection", async (socket) => {
         //Creamos el objeto Serial Port desde un Inicio
         currentPort = new SerialPort({
             path: portPath,
-            baudRate: 9600
+            baudRate: 115200
         })
         currentPortPath = portPath
 
@@ -96,15 +177,29 @@ io.on("connection", async (socket) => {
         currentPort.pipe(currentParser)
 
         currentParser.on('data', (line) => {
-            const data = line.split(",")
-            console.log(data)
-            const dataObject = dataOrder.reduce((acc, key, index) => {
-                acc[key] = data[index] ?? ""
-                return acc
-            }, {})
-            stringifier.write(dataObject)
+            const trimmedLine = line.trim()
 
-            io.emit("rawTelemetry", data)
+            if (trimmedLine.length === 0) {
+                return
+            }
+
+            if (!isTelemetryLine(trimmedLine)) {
+                console.log("# ALERTA_ESTACION", trimmedLine)
+                io.emit("stationAlert", {
+                    message: trimmedLine,
+                    raw: trimmedLine,
+                    timestamp: Date.now(),
+                })
+                return
+            }
+
+            const packet = parseTelemetryLine(trimmedLine)
+            const dataObject = buildLegacyTelemetry(packet)
+
+            console.log(packet)
+            stringifier.write(packet)
+
+            io.emit("rawTelemetry", trimmedLine.split(","))
             io.emit("telemetry", dataObject)
         })
         isConfigReady = true
@@ -117,29 +212,10 @@ io.on("connection", async (socket) => {
 })
 
 
-
-const dataOrder = [
-  "Voltaje",                 //1
-  "Inclinacion en X",        //2
-  "Inclinacion en Y",        //3
-  "Longitud",                //4
-  "Latitud",                 //5
-  "Tiempo Encendido",        //6
-  "Velocidad Vertical",      //7
-  "Presion Atmosferica",     //8
-  "Temperatura",             //9
-  "eCO2",                    //10
-  "Indice Ultravioleta",     //11
-  "Aceleracion Angular en X",//12
-  "Aceleracion Angular en Y",//13
-  "Aceleracion Angular en Z",//14
-  "Altitud"                  //15
-];
-
 const writeStream = fs.createWriteStream('output.csv')
 const stringifier = csv.stringify({
     header: true,
-    columns: dataOrder,
+        columns: telemetryFieldNames,
 })
 stringifier.pipe(writeStream)
 // const data = [
